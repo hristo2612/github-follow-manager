@@ -1,9 +1,11 @@
 {
   "name": "github-follow-manager",
   "version": "0.1.0",
+  "homepage": "https://hristo2612.github.io/github-follow-manager/",
   "private": true,
   "dependencies": {
     "gh-pages": "^1.1.0",
+    "normalizr": "^3.2.4",
     "react": "^16.3.1",
     "react-dom": "^16.3.1",
     "react-scripts": "1.1.4"
