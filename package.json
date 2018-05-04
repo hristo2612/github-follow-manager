@@ -1,0 +1,20 @@
+{
+  "name": "github-follow-manager",
+  "version": "1.0.0",
+  "description": "Manage your followers and your following auditory on Github",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hristo2612/github-follow-manager.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/hristo2612/github-follow-manager/issues"
+  },
+  "homepage": "https://github.com/hristo2612/github-follow-manager#readme"
+}
