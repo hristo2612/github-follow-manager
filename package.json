@@ -4,7 +4,8 @@
   "description": "Manage your followers and your following auditory on Github",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node server",
+    "heroku-postbuild": "cd client/ && npm install && npm install --only=dev --no-shrinkwrap && npm run build"
   },
   "repository": {
     "type": "git",
@@ -16,5 +17,8 @@
   "bugs": {
     "url": "https://github.com/hristo2612/github-follow-manager/issues"
   },
-  "homepage": "https://github.com/hristo2612/github-follow-manager#readme"
+  "homepage": "https://github.com/hristo2612/github-follow-manager#readme",
+  "dependencies": {
+    "express": "^4.16.3"
+  }
 }

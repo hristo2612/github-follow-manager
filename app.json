@@ -1,0 +1,21 @@
+{
+  "name": "github-follow-manager",
+  "description": "Manage your following auditory on Github",
+  "scripts": {
+  },
+  "env": {
+  },
+  "formation": {
+    "web": {
+      "quantity": 1
+    }
+  },
+  "addons": [
+
+  ],
+  "buildpacks": [
+    {
+      "url": "heroku/nodejs"
+    }
+  ]
+}
