@@ -1,19 +1,29 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
+import React from 'react';
+import { BrowserRouter, Switch, Route } from 'react-router-dom';
+
+import Navigation from './Components/Navigation';
+import HomePage from './Pages/HomePage';
+import FollowersPage from './Pages/FollowersPage';
+import FollowingPage from './Pages/FollowingPage';
+
 import './App.css';
 
-class App extends Component {
+class App extends React.Component {
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
-        </header>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
-      </div>
+      <BrowserRouter>
+        <div className="container">
+          <Navigation/>
+          <Switch>
+            <Route exact path="/" component={HomePage}/>
+            <Route exact path="/followers" component={FollowersPage}/>
+            <Route exact path="/following" component={FollowingPage}/>
+            <Route render={function() {
+              return(<p>Not Found</p>);
+            }}/>
+          </Switch>
+        </div>
+      </BrowserRouter>
     );
   }
 }
