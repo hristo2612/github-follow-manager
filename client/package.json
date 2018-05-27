@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@material-ui/core": "^1.0.0",
+    "@material-ui/icons": "^1.1.0",
     "axios": "^0.18.0",
     "body-parser": "^1.18.3",
     "cors": "^2.8.4",
@@ -14,13 +15,17 @@
     "react-data-grid": "^4.0.7",
     "react-data-grid-addons": "^4.0.8",
     "react-dom": "^16.3.2",
+    "react-github-login": "^1.0.3",
     "react-router-dom": "^4.2.2",
     "react-scripts": "1.1.4"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+    "start": "cross-env PORT=8080 react-scripts start",
+    "build": "cross-env PORT=8080 react-scripts build",
+    "test": "cross-env PORT=8080 react-scripts test --env=jsdom",
+    "eject": "cross-env PORT=8080 react-scripts eject"
+  },
+  "devDependencies": {
+    "cross-env": "^5.1.6"
   }
 }
