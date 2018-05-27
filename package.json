@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node server",
-    "heroku-postbuild": "cd client/  && npm run build"
+    "heroku-postbuild": "cd client/ && npm i --only=dev && npm i && npm run build"
   },
   "repository": {
     "type": "git",
