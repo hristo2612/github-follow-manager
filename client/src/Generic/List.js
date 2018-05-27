@@ -19,16 +19,16 @@ const styles = theme => ({
 
 class CheckboxListSecondary extends React.Component {
   state = {
-    checked: ['1st', '2nd', '3rd', '4th', '5th', '9th', '10th', '19th', '23rd', '25th'],
+    checked: [],
   };
 
   handleToggle = value => () => {
     const { checked } = this.state;
-    const currentIndex = checked.indexOf(value);
+    const currentIndex = checked.indexOf(value.id);
     const newChecked = [...checked];
 
     if (currentIndex === -1) {
-      newChecked.push(value);
+      newChecked.push(value.id);
     } else {
       newChecked.splice(currentIndex, 1);
     }
@@ -47,7 +47,7 @@ class CheckboxListSecondary extends React.Component {
           {(this.props.followers).map(value => (
             <ListItem key={value.id} dense button className={classes.listItem}>
               {/* <Clogged value={value}/> */}
-              <Avatar alt="Remy Sharp" src={value.avatar} />
+              <a href={value.url} target="_blank"><Avatar alt="Remy Sharp" src={value.avatar} /></a>
               <ListItemText primary={`${value.id} ${value.user}`} />
               <ListItemSecondaryAction>
                 <Checkbox
