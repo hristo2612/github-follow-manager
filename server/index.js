@@ -41,7 +41,7 @@ if (cluster.isMaster) {
 
 
   app.post('/api/login', function (req, res) {
-    axios.post('https://github.com/login/oauth/access_token', { client_id: '3145d9a7608514f31567', client_secret: 'Your_Client_Secret', code: req.body.code, accept: 'json' })
+    axios.post('https://github.com/login/oauth/access_token', { client_id: '3145d9a7608514f31567', client_secret: 'SECRET', code: req.body.code, accept: 'json' })
     .then(result => {
       var access = (result.data).match(/access_token=[A-Za-z0-9]+=*&/);
       access = access[0];

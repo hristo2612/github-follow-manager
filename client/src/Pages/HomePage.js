@@ -27,20 +27,19 @@ class HomePage extends React.Component {
   constructor(props, context) {
     super(props, context);
 
-    this._rows = []
-
     this.state = {
       followers: [],
       following: [],
       username: '',
       pageNumber: 1,
+      pageNumberFollowing: 1,
       fetchedFollowers: false,
       fetchedFollowing: false,
       followingSth: [],
       latestFollower: 1,
+      latestFollowing: 1,
       tkn: localStorage.getItem('tkn')
     }
-    this.getCurrent = this.getCurrent.bind(this)
   }
 
   onSuccess = (response) => {
@@ -60,7 +59,7 @@ class HomePage extends React.Component {
   }
 
 
-  getFollows = () => {
+  getFollowers = () => {
     console.log(this.state.tkn);
     return axios.request({
       url: `https://api.github.com/users/hristo2612/followers?page=${this.state.pageNumber}`,
@@ -69,9 +68,18 @@ class HomePage extends React.Component {
     })
   }
 
-  createRows = () => {
+  getFollowing = () => {
+    console.log(this.state.tkn);
+    return axios.request({
+      url: `https://api.github.com/users/hristo2612/following?page=${this.state.pageNumberFollowing}`,
+      method: 'get',
+      headers: { 'Authorization': `token ${this.state.tkn}` }
+    })
+  }
+
+  getCurrentFollowers = () => {
     let followers = [];
-    this.getFollows().then((res) => {
+    this.getFollowers().then((res) => {
       console.log(res.data);
       var data = res.data;
       if (data.length < 1) alert('No more data to load');
@@ -91,17 +99,32 @@ class HomePage extends React.Component {
     })
   };
 
-  getCurrent() {
-    this.createRows();
+  getCurrentFollowing = () => {
+    let following = [];
+    this.getFollowing().then((res) => {
+      console.log(res.data);
+      var data = res.data;
+      if (data.length < 1) alert('No more data to load');
+      else {
+        for (let i = 0; i < data.length; i++) {
+          following.push({
+            id: ordinal(i + this.state.latestFollowing),
+            avatar: data[i].avatar_url,
+            user: data[i].login,
+            url: data[i].html_url
+          });
+        }
+        this.setState({ following: [...this.state.following, ...following], pageNumberFollowing: this.state.pageNumberFollowing + 1, latestFollowing: following.length + this.state.latestFollowing });
+      }
+    }).catch((err) => {
+      console.log(err);
+    })
   }
-
-  rowGetter = (i) => {
-    return this._rows[i];
-  };
 
   render() {
     let loginButton = null;
-    let followButton = null;
+    let followerButton = null;
+    let followingButton = null;
     if (!this.state.tkn) {
       loginButton = <GitHubLogin clientId="3145d9a7608514f31567"
         className="styledButton"
@@ -110,17 +133,21 @@ class HomePage extends React.Component {
         onSuccess={this.onSuccess}
         onFailure={this.onFailure} />;
     } else {
-      followButton = <button className="styledButton" onClick={this.getCurrent}>
-        Load Followers
+      followerButton = <button className="styledButton" onClick={this.getCurrentFollowers}>
+        Followers ({this.state.followers.length})
       </button>;
+      followingButton = <button className="styledButton red" onClick={this.getCurrentFollowing}>
+        Following ({this.state.following.length})
+    </button>;
       loginButton = <button className="styledButton blue">Logged in..</button>;
     }
     return (
       <div>
         {loginButton}
-        {followButton}
+        {followerButton}
+        {followingButton}
         <List followers={this.state.followers} style={leftListStyle} />
-        <List followers={this.state.followers} style={rightListStyle} />
+        <List followers={this.state.following} style={rightListStyle} />
       </div>
     )
   }
