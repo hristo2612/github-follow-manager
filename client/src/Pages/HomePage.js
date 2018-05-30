@@ -121,10 +121,16 @@ class HomePage extends React.Component {
     })
   }
 
+  unfollowChecked = () => {
+    alert('unfollow')
+  }
+
   render() {
     let loginButton = null;
     let followerButton = null;
     let followingButton = null;
+    let unfollowButton = null;
+
     if (!this.state.tkn) {
       loginButton = <GitHubLogin clientId="3145d9a7608514f31567"
         className="styledButton"
@@ -140,12 +146,14 @@ class HomePage extends React.Component {
         Following ({this.state.following.length})
     </button>;
       loginButton = <button className="styledButton blue">Logged in..</button>;
+      unfollowButton = <button className="styledButton" onClick={this.unfollowChecked}>Unfollow Checked</button>
     }
     return (
       <div>
         {loginButton}
         {followerButton}
         {followingButton}
+        {unfollowButton}
         <List followers={this.state.followers} style={leftListStyle} />
         <List followers={this.state.following} style={rightListStyle} />
       </div>
