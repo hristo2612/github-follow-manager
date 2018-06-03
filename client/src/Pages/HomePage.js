@@ -158,8 +158,17 @@ class HomePage extends React.Component {
       unfollowPromises.push(this.unfollowPerson(checked[i]));
     }
     let following = this.state.following;
+    let self = this;
     axios.all(unfollowPromises).then(axios.spread(function (acct, perms) {
       alert('Successfully unfollowed selected users!');
+      let newFollowing = self.state.following;
+      for (let i = 0; i < checked.length; i++) {
+        let checkedIndex = self.state.following.findIndex(item => item.user === checked[i]);
+        if (checkedIndex > -1) {
+          newFollowing.splice(checkedIndex, 1);
+        }
+      }
+      self.setState({ following: newFollowing, checkedFollowing: [] });
     }));
   }
 
