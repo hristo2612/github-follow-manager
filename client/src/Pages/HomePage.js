@@ -38,7 +38,6 @@ class HomePage extends React.Component {
       followingSth: [],
       latestFollower: 1,
       latestFollowing: 1,
-      checked: [],
       checkedFollowers: [],
       checkedFollowing: [],
       tkn: localStorage.getItem('tkn')
