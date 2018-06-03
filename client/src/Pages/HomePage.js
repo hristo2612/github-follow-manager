@@ -38,6 +38,9 @@ class HomePage extends React.Component {
       followingSth: [],
       latestFollower: 1,
       latestFollowing: 1,
+      checked: [],
+      checkedFollowers: [],
+      checkedFollowing: [],
       tkn: localStorage.getItem('tkn')
     }
   }
@@ -68,6 +71,14 @@ class HomePage extends React.Component {
     })
   }
 
+  unfollowPerson = (user) => {
+    return axios.request({
+      url: `https://api.github.com/user/following/${user}`,
+      method: 'delete',
+      headers: { 'Authorization': `token ${this.state.tkn}` }
+    })
+  }
+
   getFollowing = () => {
     console.log(this.state.tkn);
     return axios.request({
@@ -92,7 +103,9 @@ class HomePage extends React.Component {
             url: data[i].html_url
           });
         }
-        this.setState({ followers: [...this.state.followers, ...followers], pageNumber: this.state.pageNumber + 1, latestFollower: followers.length + this.state.latestFollower });
+        this.setState({ followers: [...this.state.followers, ...followers], pageNumber: this.state.pageNumber + 1, latestFollower: followers.length + this.state.latestFollower }, () => {
+          this.checkPeople();
+        });
       }
     }).catch((err) => {
       console.log(err);
@@ -114,16 +127,74 @@ class HomePage extends React.Component {
             url: data[i].html_url
           });
         }
-        this.setState({ following: [...this.state.following, ...following], pageNumberFollowing: this.state.pageNumberFollowing + 1, latestFollowing: following.length + this.state.latestFollowing });
+        this.setState({ following: [...this.state.following, ...following], pageNumberFollowing: this.state.pageNumberFollowing + 1, latestFollowing: following.length + this.state.latestFollowing }, () => {
+          this.checkPeople();   
+        });
       }
     }).catch((err) => {
       console.log(err);
     })
   }
 
-  unfollowChecked = () => {
-    alert('unfollow')
+  checkPeople = () => {
+    let followers = this.state.followers;
+    let following = this.state.following;
+    let checkedFollowing = this.state.checkedFollowing;
+    let peopleNotFollowingYou = [];
+
+    if (followers.length > 0 && following.length > 0) {
+      for (let i = 0; i < following.length; i++) {
+        if (followers.find(item => item.user === following[i].user) === undefined) {
+          peopleNotFollowingYou.push(following[i].user);
+        }
+      }
+      this.setState({ checkedFollowing: peopleNotFollowingYou });
+    }
   }
+
+  unfollowChecked = () => {
+    let unfollowPromises = [];
+    let checked = this.state.checkedFollowing;
+    for (let i = 0; i < checked.length; i++) {
+      unfollowPromises.push(this.unfollowPerson(checked[i]));
+    }
+    let following = this.state.following;
+    axios.all(unfollowPromises).then(axios.spread(function (acct, perms) {
+      alert('Successfully unfollowed selected users!');
+    }));
+  }
+
+  handleFollowerToggle = value => () => {
+    const { checkedFollowers } = this.state;
+    const currentIndex = checkedFollowers.indexOf(value.user);
+    const newChecked = [...checkedFollowers];
+
+    if (currentIndex === -1) {
+      newChecked.push(value.user);
+    } else {
+      newChecked.splice(currentIndex, 1);
+    }
+
+    this.setState({
+      checkedFollowers: newChecked,
+    });
+  };
+
+  handleFollowingToggle = value => () => {
+    const { checkedFollowing } = this.state;
+    const currentIndex = checkedFollowing.indexOf(value.user);
+    const newChecked = [...checkedFollowing];
+
+    if (currentIndex === -1) {
+      newChecked.push(value.user);
+    } else {
+      newChecked.splice(currentIndex, 1);
+    }
+
+    this.setState({
+      checkedFollowing: newChecked,
+    });
+  };
 
   render() {
     let loginButton = null;
@@ -154,8 +225,8 @@ class HomePage extends React.Component {
         {followerButton}
         {followingButton}
         {unfollowButton}
-        <List followers={this.state.followers} style={leftListStyle} />
-        <List followers={this.state.following} style={rightListStyle} />
+        <List followers={this.state.followers} checked={this.state.checkedFollowers} handleToggle={this.handleFollowerToggle} style={leftListStyle} />
+        <List followers={this.state.following} checked={this.state.checkedFollowing} handleToggle={this.handleFollowingToggle} style={rightListStyle} />
       </div>
     )
   }

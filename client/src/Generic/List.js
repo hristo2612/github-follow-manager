@@ -18,25 +18,6 @@ const styles = theme => ({
 });
 
 class CheckboxListSecondary extends React.Component {
-  state = {
-    checked: [],
-  };
-
-  handleToggle = value => () => {
-    const { checked } = this.state;
-    const currentIndex = checked.indexOf(value.id);
-    const newChecked = [...checked];
-
-    if (currentIndex === -1) {
-      newChecked.push(value.id);
-    } else {
-      newChecked.splice(currentIndex, 1);
-    }
-
-    this.setState({
-      checked: newChecked,
-    });
-  };
 
   render() {
     const { classes } = this.props;
@@ -51,8 +32,8 @@ class CheckboxListSecondary extends React.Component {
               <ListItemText primary={`${value.id} ${value.user}`} />
               <ListItemSecondaryAction>
                 <Checkbox
-                  onChange={this.handleToggle(value)}
-                  checked={this.state.checked.indexOf(value.id) !== -1}
+                  onChange={this.props.handleToggle(value)}
+                  checked={this.props.checked.indexOf(value.user) !== -1}
                 />
               </ListItemSecondaryAction>
             </ListItem>
