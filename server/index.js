@@ -8,6 +8,8 @@ const axios = require('axios');
 
 const PORT = process.env.PORT || 5000;
 const clientFolder = '../client/build';
+const GithubAppId = process.env.APP_ID || '3145d9a7608514f31567';
+const GithubAppSecret = process.env.APP_SECRET || 'dddc931316d2e29d9e81e910b317ea4a02e6e61b';
 
 // Multi-process to utilize all CPU cores.
 if (cluster.isMaster) {
@@ -41,7 +43,7 @@ if (cluster.isMaster) {
 
 
   app.post('/api/login', function (req, res) {
-    axios.post('https://github.com/login/oauth/access_token', { client_id: '3145d9a7608514f31567', client_secret: 'SECRET', code: req.body.code, accept: 'json' })
+    axios.post('https://github.com/login/oauth/access_token', { client_id: GithubAppId, client_secret: GithubAppSecret, code: req.body.code, accept: 'json' })
     .then(result => {
       var access = (result.data).match(/access_token=[A-Za-z0-9]+=*&/);
       access = access[0];
