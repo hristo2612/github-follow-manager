@@ -8,11 +8,14 @@ import ordinal from 'ordinal';
 import Dialog from '../Generic/Dialog';
 import List from '../Generic/List';
 import Button from '@material-ui/core/Button';
-import GitHubLogin from 'react-github-login';
+import GitHubLogin from '../Components/GithubLogin';
 
 import '../App.css';
 
 const { ImageFormatter } = Formatters;
+
+const GithubClientId = process.env.REACT_APP_CLIENT_ID;
+const AppUrl = process.env.REACT_APP_URL;
 
 const leftListStyle = {
   float: 'left'
@@ -46,7 +49,7 @@ class HomePage extends React.Component {
 
   onSuccess = (response) => {
     console.log(response);
-    axios.post('http://localhost:8000/api/login', { code: response.code, accept: 'json' })
+    axios.post(AppUrl + '/api/login', { code: response.code, accept: 'json' })
       .then(result => {
         console.log(result)
         localStorage.setItem('tkn', result.data.tkn);
@@ -211,7 +214,7 @@ class HomePage extends React.Component {
     let unfollowButton = null;
 
     if (!this.state.tkn) {
-      loginButton = <GitHubLogin clientId="3145d9a7608514f31567"
+      loginButton = <GitHubLogin clientId={GithubClientId}
         className="styledButton"
         redirectUri=""
         scope="user"

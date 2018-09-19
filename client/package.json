@@ -20,10 +20,12 @@
     "react-scripts": "1.1.4"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
+    "start": "cross-env REACT_APP_URL='http://localhost:5000' REACT_APP_CLIENT_ID=3145d9a7608514f31567 react-scripts start",
+    "build": "cross-env REACT_APP_URL='https://enigmatic-shore-57962.herokuapp.com' REACT_APP_CLIENT_ID=7d5e96c8045d791b3100 react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "cross-env": "^5.2.0"
+  }
 }
